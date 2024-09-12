@@ -31,6 +31,11 @@ while True:
     ball.x += ball_speed_x
     ball.y += ball_speed_y
 
+    if ball.top <= 0 or ball.bottom >= screen_height:
+        ball_speed_y *= -1
+    if ball.left <= 0 or ball.right >= screen_width:
+        ball_speed_x *= -1
+
     # Visuals
     screen.fill(bg_color)
     pygame.draw.rect(screen,light_grey, player)
