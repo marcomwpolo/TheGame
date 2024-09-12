@@ -18,12 +18,18 @@ opponent = pygame.FRect(10.0, screen_height/2 - 70, 10.0, 140.0)
 bg_color = pygame.Color('grey12')
 light_grey = (200,200,200)
 
+ball_speed_x = 7
+ball_speed_y = 7
+
 while True:
     # Handling input
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+    ball.x += ball_speed_x
+    ball.y += ball_speed_y
 
     # Visuals
     screen.fill(bg_color)
@@ -34,4 +40,4 @@ while True:
 
     # Updating the window
     pygame.display.flip()
-    clock.tick()
+    clock.tick(60)
