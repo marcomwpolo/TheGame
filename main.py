@@ -1,4 +1,5 @@
 import pygame, sys, random
+from pygame import K_KP_ENTER
 
 # General setup
 pygame.init()
@@ -45,11 +46,13 @@ screen_width = 1280/2
 screen_height = 960/2
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Pong')
+game_state = 1
 
 # Game rectangles
 ball = pygame.FRect(screen_width/2 - 15,screen_height/2 - 15,30.0,30.0)
 player = pygame.FRect(screen_width - 20, screen_height/2 - 70, 10.0,140.0)
 opponent = pygame.FRect(10.0, screen_height/2 - 70, 10.0, 140.0)
+rectangle = pygame.FRect(121,121,121,121)
 
 bg_color = pygame.Color('grey12')
 light_grey = (200,200,200)
@@ -61,31 +64,39 @@ opponent_speed = 7
 
 while True:
     # Handling input
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_DOWN:
-                player_speed += 7
-            if event.key == pygame.K_UP:
-                player_speed -= 7
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_DOWN:
-                player_speed -= 7
-            if event.key == pygame.K_UP:
-                player_speed += 7
+    if game_state == 0:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    player_speed += 7
+                if event.key == pygame.K_UP:
+                    player_speed -= 7
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_DOWN:
+                    player_speed -= 7
+                if event.key == pygame.K_UP:
+                    player_speed += 7
 
 
-    ball_animation()
-    player_animation()
-    opponent_ai()
-    # Visuals
-    screen.fill(bg_color)
-    pygame.draw.rect(screen,light_grey, player)
-    pygame.draw.rect(screen,light_grey, opponent)
-    pygame.draw.ellipse(screen,light_grey, ball)
-    pygame.draw.aaline(screen,light_grey, (screen_width/2,0), (screen_width/2,screen_height))
+        ball_animation()
+        player_animation()
+        opponent_ai()
+        # Visuals
+        screen.fill(bg_color)
+        pygame.draw.rect(screen,light_grey, player)
+        pygame.draw.rect(screen,light_grey, opponent)
+        pygame.draw.ellipse(screen,light_grey, ball)
+        pygame.draw.aaline(screen,light_grey, (screen_width/2,0), (screen_width/2,screen_height))
+
+    if game_state == 1:
+        pygame.draw.rect(screen,light_grey, rectangle)
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    game_state = 0
 
     # Updating the window
     pygame.display.flip()
