@@ -1,5 +1,4 @@
 import pygame, sys, random
-from pygame import K_KP_ENTER
 
 # General setup
 pygame.init()
