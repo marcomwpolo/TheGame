@@ -38,7 +38,11 @@ def opponent_ai ():
         opponent.bottom = screen_height
 
 def ball_restart():
-    global ball_speed_x, ball_speed_y
+    global ball_speed_x, ball_speed_y, opponent_score, player_score
+    if ball.left <= 0:
+        player_score += 1
+    if ball.right >= screen.width:
+        opponent_score += 1
     ball.center = (screen_width/2, screen_height/2)
     ball_speed_y *= random.choice((1,-1))
     ball_speed_x *= random.choice((1, -1))
@@ -51,8 +55,6 @@ pygame.display.set_caption('Pong')
 game_state = 1
 
 # Game rectangles
-opponent_score_text = my_font.render(str(opponent_score), False, (255, 255, 255))
-player_score_text = my_font.render(str(player_score), False, (255, 255, 255))
 ball = pygame.FRect(screen_width/2 - 15,screen_height/2 - 15,30.0,30.0)
 player = pygame.FRect(screen_width - 20, screen_height/2 - 70, 10.0,140.0)
 opponent = pygame.FRect(10.0, screen_height/2 - 70, 10.0, 140.0)
@@ -69,10 +71,6 @@ opponent_speed = 7
 while True:
     # Handling input
     if game_state == 0:
-        if ball.left <= 0:
-            opponent_score += 1
-        if ball.right >= screen.width:
-            player_score += 1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -98,6 +96,8 @@ while True:
         pygame.draw.rect(screen,light_grey, opponent)
         pygame.draw.ellipse(screen,light_grey, ball)
         pygame.draw.aaline(screen,light_grey, (screen_width/2,0), (screen_width/2,screen_height))
+        opponent_score_text = my_font.render(str(opponent_score), False, (255, 255, 255))
+        player_score_text = my_font.render(str(player_score), False, (255, 255, 255))
         screen.blit(opponent_score_text, (screen_width/2-20, 0))
         screen.blit(player_score_text, (screen_width/2+10, 0))
 
