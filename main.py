@@ -98,8 +98,8 @@ while True:
         pygame.draw.aaline(screen,light_grey, (screen_width/2,0), (screen_width/2,screen_height))
         opponent_score_text = my_font.render(str(opponent_score), False, (255, 255, 255))
         player_score_text = my_font.render(str(player_score), False, (255, 255, 255))
-        screen.blit(opponent_score_text, (screen_width/2-20, 0))
-        screen.blit(player_score_text, (screen_width/2+10, 0))
+        screen.blit(opponent_score_text, (0, 0))
+        screen.blit(player_score_text, (screen_width-15, 0))
 
     if game_state == 1:
         title_text = my_font.render("Pong!", False, (255, 255, 255))
