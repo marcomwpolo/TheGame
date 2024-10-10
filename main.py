@@ -102,8 +102,14 @@ while True:
         screen.blit(player_score_text, (screen_width/2+10, 0))
 
     if game_state == 1:
-        pygame.draw.rect(screen,light_grey, rectangle)
+        title_text = my_font.render("Pong!", False, (255, 255, 255))
+        screen.blit(title_text, (screen_width/2-20, 0))
+        play_text = my_font.render("Press Enter/Return Key To Begin...", False, (255, 255, 255))
+        screen.blit(play_text, (screen_width/2-155, 300))
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     game_state = 0
