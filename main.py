@@ -70,6 +70,22 @@ opponent_speed = 7
 
 while True:
     # Handling input
+    if game_state == -2:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        lose_text = my_font.render("You Lost :(", False, (255, 255, 255))
+        screen.blit(lose_text, (screen_width/2-50, screen_height/2-50))
+
+    if game_state == -1:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        win_text = my_font.render("You Won! :)", False, (255, 255, 255))
+        screen.blit(win_text, (screen_width/2-50, screen_height/2-50))
+
     if game_state == 0:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -85,6 +101,11 @@ while True:
                     player_speed -= 7
                 if event.key == pygame.K_UP:
                     player_speed += 7
+
+        if player_score == 11:
+            game_state = -1
+        if opponent_score == 11:
+            game_state = -2
 
 
         ball_animation()
