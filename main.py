@@ -47,6 +47,43 @@ def ball_restart():
     ball_speed_y *= random.choice((1,-1))
     ball_speed_x *= random.choice((1, -1))
 
+def do_the_game(ai_is_on = True):
+    global player_speed, game_state
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_DOWN:
+                player_speed += 7
+            if event.key == pygame.K_UP:
+                player_speed -= 7
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_DOWN:
+                player_speed -= 7
+            if event.key == pygame.K_UP:
+                player_speed += 7
+
+    if player_score == 11:
+        game_state = -1
+    if opponent_score == 11:
+        game_state = -2
+
+    ball_animation()
+    player_animation()
+    if ai_is_on:
+        opponent_ai()
+    # Visuals
+    screen.fill(bg_color)
+    pygame.draw.rect(screen, light_grey, player)
+    pygame.draw.rect(screen, light_grey, opponent)
+    pygame.draw.ellipse(screen, light_grey, ball)
+    pygame.draw.aaline(screen, light_grey, (screen_width / 2, 0), (screen_width / 2, screen_height))
+    opponent_score_text = my_font.render(str(opponent_score), False, (255, 255, 255))
+    player_score_text = my_font.render(str(player_score), False, (255, 255, 255))
+    screen.blit(opponent_score_text, (0, 0))
+    screen.blit(player_score_text, (screen_width - 15, 0))
+
 # Setting up the main window
 screen_width = 1280/2
 screen_height = 960/2
@@ -70,6 +107,8 @@ opponent_speed = 7
 
 while True:
     # Handling input
+    do_the_game(ai_is_on=False)
+
     if game_state == -2:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -87,46 +126,9 @@ while True:
         screen.blit(win_text, (screen_width/2-50, screen_height/2-50))
 
     if game_state == 0:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_DOWN:
-                    player_speed += 7
-                if event.key == pygame.K_UP:
-                    player_speed -= 7
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_DOWN:
-                    player_speed -= 7
-                if event.key == pygame.K_UP:
-                    player_speed += 7
-
-        if player_score == 11:
-            game_state = -1
-        if opponent_score == 11:
-            game_state = -2
-
-
-        ball_animation()
-        player_animation()
-        opponent_ai()
-        # Visuals
-        screen.fill(bg_color)
-        pygame.draw.rect(screen,light_grey, player)
-        pygame.draw.rect(screen,light_grey, opponent)
-        pygame.draw.ellipse(screen,light_grey, ball)
-        pygame.draw.aaline(screen,light_grey, (screen_width/2,0), (screen_width/2,screen_height))
-        opponent_score_text = my_font.render(str(opponent_score), False, (255, 255, 255))
-        player_score_text = my_font.render(str(player_score), False, (255, 255, 255))
-        screen.blit(opponent_score_text, (0, 0))
-        screen.blit(player_score_text, (screen_width-15, 0))
+        do_the_game()
 
     if game_state == 1:
-        title_text = my_font.render("Pong!", False, (255, 255, 255))
-        screen.blit(title_text, (screen_width/2-20, 0))
-        play_text = my_font.render("Press Enter/Return Key To Begin...", False, (255, 255, 255))
-        screen.blit(play_text, (screen_width/2-155, 300))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -134,6 +136,15 @@ while True:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     game_state = 0
+                elif event.key == pygame.K_m:
+                    game_state = -3
+        title_text = my_font.render("Pong!", False, (255, 255, 255))
+        screen.blit(title_text, (screen_width / 2 - 20, 0))
+        play_text = my_font.render("Press Enter/Return Key To Begin...", False, (255, 255, 255))
+        screen.blit(play_text, (screen_width / 2 - 155, 300))
+        two_player_text = my_font.render("Press 'm' Key To Begin in 2 player mode...", False, (255, 255, 255))
+        screen.blit(two_player_text, (screen_width / 2 - 155, 350))
+
 
     # Updating the window
     pygame.display.flip()
