@@ -48,41 +48,83 @@ def ball_restart():
     ball_speed_x *= random.choice((1, -1))
 
 def do_the_game(ai_is_on = True):
-    global player_speed, game_state
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_DOWN:
-                player_speed += 7
-            if event.key == pygame.K_UP:
-                player_speed -= 7
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_DOWN:
-                player_speed -= 7
-            if event.key == pygame.K_UP:
-                player_speed += 7
-
-    if player_score == 11:
-        game_state = -1
-    if opponent_score == 11:
-        game_state = -2
-
-    ball_animation()
-    player_animation()
+    global player_speed, opponent_speed, game_state
     if ai_is_on:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    player_speed += 7
+                if event.key == pygame.K_UP:
+                    player_speed -= 7
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_DOWN:
+                    player_speed -= 7
+                if event.key == pygame.K_UP:
+                    player_speed += 7
+
+        if player_score == 11:
+            game_state = -1
+        if opponent_score == 11:
+            game_state = -2
+
+        ball_animation()
+        player_animation()
         opponent_ai()
-    # Visuals
-    screen.fill(bg_color)
-    pygame.draw.rect(screen, light_grey, player)
-    pygame.draw.rect(screen, light_grey, opponent)
-    pygame.draw.ellipse(screen, light_grey, ball)
-    pygame.draw.aaline(screen, light_grey, (screen_width / 2, 0), (screen_width / 2, screen_height))
-    opponent_score_text = my_font.render(str(opponent_score), False, (255, 255, 255))
-    player_score_text = my_font.render(str(player_score), False, (255, 255, 255))
-    screen.blit(opponent_score_text, (0, 0))
-    screen.blit(player_score_text, (screen_width - 15, 0))
+        # Visuals
+        screen.fill(bg_color)
+        pygame.draw.rect(screen, light_grey, player)
+        pygame.draw.rect(screen, light_grey, opponent)
+        pygame.draw.ellipse(screen, light_grey, ball)
+        pygame.draw.aaline(screen, light_grey, (screen_width / 2, 0), (screen_width / 2, screen_height))
+        opponent_score_text = my_font.render(str(opponent_score), False, (255, 255, 255))
+        player_score_text = my_font.render(str(player_score), False, (255, 255, 255))
+        screen.blit(opponent_score_text, (0, 0))
+        screen.blit(player_score_text, (screen_width - 15, 0))
+    else:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    player_speed += 7
+                if event.key == pygame.K_UP:
+                    player_speed -= 7
+                if event.key == pygame.K_s:
+                    opponent_speed += 7
+                if event.key == pygame.K_w:
+                    opponent_speed -= 7
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_DOWN:
+                    player_speed -= 7
+                if event.key == pygame.K_UP:
+                    player_speed += 7
+                if event.key == pygame.K_s:
+                    opponent_speed -= 7
+                if event.key == pygame.K_w:
+                    opponent_speed += 7
+
+
+        if player_score == 11:
+            game_state = -1
+        if opponent_score == 11:
+            game_state = -2
+
+        ball_animation()
+        player_animation()
+        # Visuals
+        screen.fill(bg_color)
+        pygame.draw.rect(screen, light_grey, player)
+        pygame.draw.rect(screen, light_grey, opponent)
+        pygame.draw.ellipse(screen, light_grey, ball)
+        pygame.draw.aaline(screen, light_grey, (screen_width / 2, 0), (screen_width / 2, screen_height))
+        opponent_score_text = my_font.render(str(opponent_score), False, (255, 255, 255))
+        player_score_text = my_font.render(str(player_score), False, (255, 255, 255))
+        screen.blit(opponent_score_text, (0, 0))
+        screen.blit(player_score_text, (screen_width - 15, 0))
 
 # Setting up the main window
 screen_width = 1280/2
@@ -107,7 +149,8 @@ opponent_speed = 7
 
 while True:
     # Handling input
-    do_the_game(ai_is_on=False)
+    if game_state == -3:
+        do_the_game(ai_is_on=False)
 
     if game_state == -2:
         for event in pygame.event.get():
