@@ -27,6 +27,13 @@ def player_animation():
     if player.bottom >= screen_height:
         player.bottom = screen_height
 
+def opponent_animation():
+    opponent.y += opponent_speed
+    if opponent.top <= 0:
+        opponent.top = 0
+    if opponent.bottom >= screen_height:
+        opponent.bottom = screen_height
+
 def opponent_ai ():
     if opponent.top < ball.y:
         opponent.top += opponent_speed
@@ -109,12 +116,14 @@ def do_the_game(ai_is_on = True):
 
 
         if player_score == 11:
-            game_state = -1
+            game_state = -4
         if opponent_score == 11:
-            game_state = -2
+            game_state = -5
 
         ball_animation()
         player_animation()
+        opponent_animation()
+        opponent_speed = 0
         # Visuals
         screen.fill(bg_color)
         pygame.draw.rect(screen, light_grey, player)
@@ -149,6 +158,22 @@ opponent_speed = 7
 
 while True:
     # Handling input
+    if game_state == -5:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        left_text = my_font.render("Left Player won!", False, (255, 255, 255))
+        screen.blit(left_text, (screen_width / 2 - 50, screen_height / 2 - 50))
+
+    if game_state == -4:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        right_text = my_font.render("Right Player Won!", False, (255, 255, 255))
+        screen.blit(right_text, (screen_width / 2 - 50, screen_height / 2 - 50))
+
     if game_state == -3:
         do_the_game(ai_is_on=False)
 
@@ -157,6 +182,7 @@ while True:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
         lose_text = my_font.render("You Lost :(", False, (255, 255, 255))
         screen.blit(lose_text, (screen_width/2-50, screen_height/2-50))
 
@@ -167,6 +193,7 @@ while True:
                 sys.exit()
         win_text = my_font.render("You Won! :)", False, (255, 255, 255))
         screen.blit(win_text, (screen_width/2-50, screen_height/2-50))
+
 
     if game_state == 0:
         do_the_game()
