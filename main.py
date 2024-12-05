@@ -80,6 +80,7 @@ def do_the_game(ai_is_on = True):
         ball_animation()
         player_animation()
         opponent_ai()
+        opponent_speed = 7
         # Visuals
         screen.fill(bg_color)
         pygame.draw.rect(screen, light_grey, player)
