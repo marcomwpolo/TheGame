@@ -124,7 +124,6 @@ def do_the_game(ai_is_on = True):
         ball_animation()
         player_animation()
         opponent_animation()
-        opponent_speed = 0
         # Visuals
         screen.fill(bg_color)
         pygame.draw.rect(screen, light_grey, player)
@@ -155,7 +154,7 @@ light_grey = (200,200,200)
 ball_speed_x = 7 * random.choice((1,-1))
 ball_speed_y = 7 * random.choice((1,-1))
 player_speed = 0
-opponent_speed = 7
+opponent_speed = 0
 
 while True:
     # Handling input
